@@ -97,7 +97,7 @@ form {
   }
 
   .navbar {
-    @apply flex flex-row justify-between items-center bg-white rounded-full p-3 w-full px-5 max-sm:px-4 max-w-[1200px] mx-auto max-sm:mx-2;
+    @apply flex flex-row justify-between items-center bg-white rounded-full p-3 w-full px-5 max-w-[1200px] mx-auto;
   }
 
   .score-badge {
