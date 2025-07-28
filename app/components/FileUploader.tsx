@@ -7,22 +7,25 @@ interface FileUploaderProps {
 }
 
 const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
     const onDrop = useCallback((acceptedFiles: File[]) => {
         const file = acceptedFiles[0] || null;
-
+        setSelectedFile(file);
         onFileSelect?.(file);
     }, [onFileSelect]);
 
     const maxFileSize = 20 * 1024 * 1024; // 20MB in bytes
 
-    const {getRootProps, getInputProps, isDragActive, acceptedFiles} = useDropzone({
+    const {getRootProps, getInputProps, isDragActive, acceptedFiles, fileRejections} = useDropzone({
         onDrop,
         multiple: false,
         accept: { 'application/pdf': ['.pdf']},
         maxSize: maxFileSize,
     })
 
-    const file = acceptedFiles[0] || null;
+    // Use the local state instead of directly accessing acceptedFiles
+    const file = selectedFile;
 
 
 
@@ -46,7 +49,9 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
                                 </div>
                             </div>
                             <button className="p-2 cursor-pointer" onClick={(e) => {
-                                onFileSelect?.(null)
+                                e.stopPropagation();
+                                setSelectedFile(null);
+                                onFileSelect?.(null);
                             }}>
                                 <img src="/icons/cross.svg" alt="remove" className="w-4 h-4" />
                             </button>
